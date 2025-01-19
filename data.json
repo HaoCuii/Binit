@@ -1,0 +1,47 @@
+{
+  "leaderboard": [
+    {
+      "user_name": "JohnDoe",
+      "total_points": 1200
+    },
+    {
+      "user_name": "JaneSmith",
+      "total_points": 1500
+    },
+    {
+      "user_name": "AliceJohnson",
+      "total_points": 900
+    },
+    {
+      "user_name": "BobBrown",
+      "total_points": 1100
+    },
+    {
+      "user_name": "CharlieDavis",
+      "total_points": 1300
+    },
+    {
+        "user_name": "CharlieDavis",
+        "total_points": 1300
+      },
+    {
+      "user_name": "CharlieDavis",
+      "total_points": 1300
+    },
+    {
+        "user_name": "CharlieDavis",
+        "total_points": 1300
+      }
+  ],
+
+  "CharlieDavis": [
+    {
+      "user_name": "CharlieDavis",
+      "total_points": 1515,
+      "Recycle": 15,
+        "Compost": 4,
+        "Garbage": 35,
+        "Glass": 7
+    }
+  ]
+}
