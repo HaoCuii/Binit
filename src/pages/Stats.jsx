@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiDeleteBin7Line, RiLeafLine, RiWaterFlashLine, RiTreeLine, RiRecycleLine, RiPlantLine, RiEarthLine } from "react-icons/ri";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import GarbageChart from '../components/GarbageChart';
 import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
-import data from '../../data';
+import axios from 'axios';
 
 const Stats = () => {
-  const { monthlyData } = data.users.find(user => user.user_name === 'JohnDoe');
+  const [data, setData] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/stats/', { user_name: 'JohnDoe' });
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const { monthlyData } = data;
   const aprilData = monthlyData.find(month => month.month === 'Apr');
   const { recycling: Recycle, composting: Compost, waste: Garbage, glass: Glass } = aprilData;
   const totalBins = Recycle + Compost + Garbage + Glass;
-
-  const [activeTab, setActiveTab] = useState('overview');
 
   const StatCard = ({ title, value, subtitle, icon: Icon, gradient }) => (
     <div className={`bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow ${gradient}`}>

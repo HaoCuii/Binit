@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trophy, Medal, Award, Crown, ChevronUp, ChevronDown } from 'lucide-react';
-import data from '../../data';
 import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
+import axios from 'axios';
 
 const LeaderBoard = () => {
+  const [data, setData] = useState([]);
   const [sortTypes, setSortTypes] = useState(['total_points']);
   const [selectedMonths, setSelectedMonths] = useState(['Apr']);
   const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/leaderboard/', { months: selectedMonths });
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [selectedMonths]);
 
   const calculateTotalPoints = (user, months) => {
     return months.reduce((total, month) => {
@@ -26,7 +40,7 @@ const LeaderBoard = () => {
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr'];
 
-  const sortedData = data.users.map(user => {
+  const sortedData = data.map(user => {
     const totalPoints = calculateTotalPoints(user, selectedMonths);
     const monthData = selectedMonths.map(month => user.monthlyData.find(m => m.month === month));
     const combinedData = monthData.reduce((acc, curr) => ({
