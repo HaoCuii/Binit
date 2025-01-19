@@ -5,10 +5,10 @@ import Login from './pages/Login'
 import SignUp from './pages/Signup'
 import LeaderBoard from './pages/LeaderBoard'
 import Stats from './pages/Stats'
+import Home from './components/Home'
 
 const App = () => {
-
-    const [loggedIn, setLoggedIn] = React.useState(true)
+  const [loggedIn, setLoggedIn] = React.useState(true)
 
   return (
     <div>
@@ -16,9 +16,10 @@ const App = () => {
         <Routes>
           <Route index element={<Landing />} />
           <Route path='/landing' element={<Landing />} />  
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/leaderboard' element={<LeaderBoard />} />
+          <Route path='/home' element={<Home loggedIn={loggedIn} />} />
 
           {loggedIn ? (
             <Route path='/stats' element={<Stats />} />

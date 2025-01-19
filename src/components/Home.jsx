@@ -1,14 +1,21 @@
 import React, { useState, useRef } from "react";
-import { Camera, X, Image as ImageIcon, Sparkles, Upload, Award, BarChart3 } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import { Camera, X, Image as ImageIcon, Sparkles, Upload } from "lucide-react";
 import Features from "./Features";
 
-const Home = () => {
+const Home = ({ loggedIn }) => {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const navigate = useNavigate();
 
   const openCamera = async () => {
+    if (loggedIn) {
+      navigate('/login');
+      return;
+    }
+
     try {
       setCameraOpen(true);
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
