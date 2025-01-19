@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Home, BarChart2, Trophy, LogIn, UserPlus, MoreHorizontal } from 'lucide-react';
+import { Home, BarChart2, Trophy, LogIn, UserPlus, MoreHorizontal, LogOut } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ loggedIn, setLoggedIn }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleLogout = () => {
+        setLoggedIn(false);
+    };
 
     return (
         <nav className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-lg">
@@ -13,21 +17,32 @@ const Navbar = () => {
                     <NavLink href="/leaderboard" icon={<Trophy size={18} />} text="Leaderboard" />
                 </ul>
 
-                {/* For larger screens: Sign up and Log in buttons */}
+                {/* For larger screens: Show Sign Up/Log In buttons or Log Out button based on loggedIn */}
                 <div className="hidden md:flex items-center space-x-4">
-                    <a href="/signup">
-                        <button className="flex items-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700">
-                            <UserPlus size={18} className="mr-2" />
-                            Sign Up
+                    {!loggedIn ? (
+                        <>
+                            <a href="/signup">
+                                <button className="flex items-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700">
+                                    <UserPlus size={18} className="mr-2" />
+                                    Sign Up
+                                </button>
+                            </a>
+                            <a href="/login">
+                                <button className="flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
+                                    <LogIn size={18} className="mr-2" />
+                                    Log In
+                                </button>
+                            </a>
+                        </>
+                    ) : (
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700"
+                        >
+                            <LogOut size={18} className="mr-2" />
+                            Log Out
                         </button>
-                    </a>
-
-                    <a href="/login">
-                        <button className="flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
-                            <LogIn size={18} className="mr-2" />
-                            Log in
-                        </button>
-                    </a>
+                    )}
                 </div>
 
                 {/* For mobile: Three dots icon */}
@@ -44,12 +59,23 @@ const Navbar = () => {
             {/* Mobile Menu (appears when the three dots are clicked) */}
             {isMenuOpen && (
                 <div className="md:hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4">
-                    <a href="/signup" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
-                        Sign Up
-                    </a>
-                    <a href="/login" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
-                        Log In
-                    </a>
+                    {!loggedIn ? (
+                        <>
+                            <a href="/signup" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
+                                Sign Up
+                            </a>
+                            <a href="/login" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
+                                Log In
+                            </a>
+                        </>
+                    ) : (
+                        <button
+                            onClick={handleLogout}
+                            className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                        >
+                            Log Out
+                        </button>
+                    )}
                 </div>
             )}
         </nav>

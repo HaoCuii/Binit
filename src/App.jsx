@@ -6,6 +6,7 @@ import SignUp from './pages/Signup'
 import LeaderBoard from './pages/LeaderBoard'
 import Stats from './pages/Stats'
 import Home from './components/Home'
+import Navbar from './components/navbar' // Import Navbar
 
 const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(true)
@@ -13,9 +14,10 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> {/* Pass setLoggedIn */}
         <Routes>
-          <Route index element={<Landing />} />
-          <Route path='/landing' element={<Landing />} />  
+          <Route index element={<Landing loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+          <Route path='/landing' element={<Landing loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />  
           <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/leaderboard' element={<LeaderBoard />} />

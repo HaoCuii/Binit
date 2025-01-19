@@ -7,10 +7,9 @@ import Footer from '../components/Footer'
 import About from '../components/About'
 import Features from '../components/Features'
 
-const Landing = () => {
+const Landing = ({ loggedIn, setLoggedIn }) => {
   return (
     <div className='bg-neutral-100'>
-        <Navbar />
         <div className='max-w-7xl mx-auto'>
           <Home />
           <About />
