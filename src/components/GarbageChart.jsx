@@ -11,20 +11,40 @@ const chartData = {
     {
       label: "Bins",
       data: [data.CharlieDavis[0].Recycle, data.CharlieDavis[0].Compost, data.CharlieDavis[0].Garbage, data.CharlieDavis[0].Glass],
-      backgroundColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-      ]
+      backgroundColor: ["#F9EAD3", "#D8A67D", "#8B5E4A", "#AD8D83"],
+      borderColor: 'transparent' // Remove the border
     },
   ],
 }
 
+const chartOptions = {
+  plugins: {
+    legend: {
+      display: false, // Disable the default legend
+    },
+  },
+}
+
 const GarbageChart = () => {
   return (
-    <div>
-      <Pie data={chartData} />
+    <div className="flex items-center justify-center p-8">
+      {/* Chart on the left */}
+      <div style={{ width: '200px', height: '200px' }}> {/* Set the desired width and height */}
+        <Pie data={chartData} options={chartOptions} />
+      </div>
+
+      {/* Labels on the right */}
+      <div className="w-1/2 flex flex-col ml-8 space-y-4">
+        {chartData.labels.map((label, index) => (
+          <div key={index} className="flex items-center">
+            <div
+              className="w-4 h-4 rounded-full"
+              style={{ backgroundColor: chartData.datasets[0].backgroundColor[index] }}
+            ></div>
+            <span className="ml-4 text-lg font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

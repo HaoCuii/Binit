@@ -1,17 +1,23 @@
 import React from 'react'
 import Navbar from '../components/navbar'
-import Home from '../components/home'
-import Stats from '../components/Stats'
-import LeaderBoard from '../components/LeaderBoard'
+import Home from '../components/Home'
+import Stats from './Stats'
+import LeaderBoard from './LeaderBoard'
+import Footer from '../components/Footer'
+import About from '../components/About'
+import Features from '../components/Features'
 
 const Landing = () => {
   return (
     <div>
         <Navbar />
-        <section id='home'><Home /></section>
-        <section id='stats'><Stats /></section>
-        <section id='leaderboard'><LeaderBoard /></section>
-      
+        <div className='max-w-7xl mx-auto'>
+          <Home />
+          <About />
+          <Features />
+        </div>
+        <Footer />
+
     </div>
   )
 }
