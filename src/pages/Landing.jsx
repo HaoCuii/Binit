@@ -11,7 +11,7 @@ const Landing = ({ loggedIn, setLoggedIn }) => {
   return (
     <div className='bg-neutral-100'>
         <div className='max-w-7xl mx-auto'>
-          <Home />
+          <Home loggedIn={loggedIn}/>
           <About />
           
         </div>

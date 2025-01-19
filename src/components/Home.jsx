@@ -12,7 +12,7 @@ const Home = ({ loggedIn }) => {
   const navigate = useNavigate();
 
   const openCamera = async () => {
-    if (loggedIn) {
+    if (!loggedIn) {
       navigate('/login');
       return;
     }
