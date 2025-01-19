@@ -1,31 +1,30 @@
 import React from 'react'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import data from '../../data.json'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const chartData = {
-  labels: ['Recycle', 'Compost', 'Garbage', 'Glass'],
-  datasets: [
-    {
-      label: "Bins",
-      data: [data.CharlieDavis[0].Recycle, data.CharlieDavis[0].Compost, data.CharlieDavis[0].Garbage, data.CharlieDavis[0].Glass],
-      backgroundColor: ["#F9EAD3", "#D8A67D", "#8B5E4A", "#AD8D83"],
-      borderColor: 'transparent' // Remove the border
-    },
-  ],
-}
+const GarbageChart = ({ Recycle, Compost, Garbage, Glass }) => {
+  const chartData = {
+    labels: ['Recycle', 'Compost', 'Garbage', 'Glass'],
+    datasets: [
+      {
+        label: "Bins",
+        data: [Recycle, Compost, Garbage, Glass],
+        backgroundColor: ["#F9EAD3", "#D8A67D", "#8B5E4A", "#AD8D83"],
+        borderColor: 'transparent' // Remove the border
+      },
+    ],
+  }
 
-const chartOptions = {
-  plugins: {
-    legend: {
-      display: false, // Disable the default legend
+  const chartOptions = {
+    plugins: {
+      legend: {
+        display: false, // Disable the default legend
+      },
     },
-  },
-}
+  }
 
-const GarbageChart = () => {
   return (
     <div className="flex items-center justify-center p-8">
       {/* Chart on the left */}

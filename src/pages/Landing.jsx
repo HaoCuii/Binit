@@ -14,7 +14,7 @@ const Landing = () => {
         <div className='max-w-7xl mx-auto'>
           <Home />
           <About />
-          <Features />
+          
         </div>
         <Footer />
 
