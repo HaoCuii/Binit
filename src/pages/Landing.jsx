@@ -8,9 +8,10 @@ const Landing = () => {
   return (
     <div>
         <Navbar />
-        <Home />
-        <Stats />
-        <LeaderBoard />
+        <section id='home'><Home /></section>
+        <section id='stats'><Stats /></section>
+        <section id='leaderboard'><LeaderBoard /></section>
+      
     </div>
   )
 }

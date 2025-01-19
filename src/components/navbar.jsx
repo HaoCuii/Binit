@@ -5,9 +5,10 @@ const Navbar = () => {
         <nav className="sticky top-0 z-50 px-4 backdrop-blur-lg border-b border-neutral-600 bg-neutral-100">
             <div className="container p-2 mx-auto flex justify-between items-center">
                 <ul className="flex space-x-10">
-                    <li className="text-primary-500">Home</li>
-                    <li className="text-primary-500">Stats</li>
-                    <li className="text-primary-500">Leaderboard</li>
+                    <a href="#home"><li className="text-primary-500">Home</li></a>
+                    <a href="#stats"><li className="text-primary-500">Stats</li></a>
+                    <a href="#leaderboard"><li className="text-primary-500">Leaderboard</li></a>
+            
                 </ul>
 
                 <div className="flex space-x-4">
