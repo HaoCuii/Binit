@@ -78,7 +78,7 @@ const Stats = () => {
             </span>
           </h1>
           <p className="text-center text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
-            Track your environmental impact, recycling progress, and contribution to a sustainable future
+          Your personal dashboard to track your waste management habits and their environmental impact.
           </p>
         </div>
 

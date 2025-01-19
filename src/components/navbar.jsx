@@ -9,7 +9,7 @@ const Navbar = () => {
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <ul className="flex items-center space-x-8">
                     <NavLink href="/landing" icon={<Home size={18} />} text="Home" />
-                    <NavLink href="/stats" icon={<BarChart2 size={18} />} text="Stats" />
+                    <NavLink href="/stats" icon={<BarChart2 size={18} />} text="Dashboard" />
                     <NavLink href="/leaderboard" icon={<Trophy size={18} />} text="Leaderboard" />
                 </ul>
 

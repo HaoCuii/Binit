@@ -9,7 +9,7 @@ import Features from '../components/Features'
 
 const Landing = () => {
   return (
-    <div>
+    <div className='bg-neutral-100'>
         <Navbar />
         <div className='max-w-7xl mx-auto'>
           <Home />

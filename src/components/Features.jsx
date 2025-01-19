@@ -5,25 +5,25 @@ const Features = () => {
   const features = [
     {
       icon: Camera,
-      title: "Instant Recognition",
+      title: "AI Recognition",
       description: "Simply snap a photo of your waste and let our AI do the sorting"
     },
     {
       icon: Award,
-      title: "Earn Rewards",
-      description: "Get points and badges for proper waste management"
+      title: "Points System",
+      description: "Gain points for recycling, composting, and reducing waste and climb the leaderboard"
     },
     {
       icon: BarChart3,
       title: "Track Progress",
-      description: "Monitor your environmental impact with detailed analytics"
+      description: "Monitor your environmental impact and track your waste with detailed analytics"
     }
   ];
 
   return (
     <div className="bg-neutral-100">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-16">How It Works</h2>
+        <h2 className="text-3xl font-bold text-center mb-16">Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {features.map((feature, index) => (
             <div 
