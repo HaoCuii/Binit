@@ -149,15 +149,6 @@ const Home = ({ loggedIn }) => {
         const resultText = data.candidates[0].content.parts[0].text;
         setResult(resultText);
 
-        // Send the result to the backend Django environment
-        console.log("Sending result to the backend:", resultText.toLowerCase());
-        await fetch("http://localhost:8000/api/process-result/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ result: resultText.toLowerCase() })
-        });
       } else {
         setResult("Unable to classify the image.");
         console.error("Unexpected API response format:", data);

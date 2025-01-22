@@ -1,35 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { RiDeleteBin7Line, RiLeafLine, RiWaterFlashLine, RiTreeLine, RiRecycleLine, RiPlantLine, RiEarthLine } from "react-icons/ri";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
-import axios from 'axios';
+import data from '../../data';
+import { PiBeerBottleBold } from "react-icons/pi";
+
 
 const Stats = () => {
-  const [data, setData] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post('http://localhost:8000/api/stats/', { user_name: 'JohnDoe' });
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
-  const { monthlyData } = data;
+  const { monthlyData } = data.users.find(user => user.user_name === 'JohnDoe');
   const aprilData = monthlyData.find(month => month.month === 'Apr');
   const { recycling: Recycle, composting: Compost, waste: Garbage, glass: Glass } = aprilData;
   const totalBins = Recycle + Compost + Garbage + Glass;
+
+  const [activeTab, setActiveTab] = useState('overview');
 
   const StatCard = ({ title, value, subtitle, icon: Icon, gradient }) => (
     <div className={`bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow ${gradient}`}>
@@ -67,7 +50,6 @@ const Stats = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <Navbar />
       
       <main className="container mx-auto px-4 py-8">
         <div className="mt-24 mb-12">
@@ -78,7 +60,7 @@ const Stats = () => {
             </span>
           </h1>
           <p className="text-center text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
-          Your personal dashboard to track your waste management habits and their environmental impact.
+            Your personal dashboard to track your waste management habits and their environmental impact.
           </p>
         </div>
 
@@ -140,7 +122,7 @@ const Stats = () => {
                 title="Glass Recycling Rate"
                 value={`${(((Glass / totalBins)) * 100).toFixed(1)}%`}
                 subtitle="Of your waste is glass"
-                icon={RiEarthLine}
+                icon={PiBeerBottleBold}
                 gradient="bg-gradient-to-br from-sky-50 to-blue-50"
               />
             </div>
@@ -174,28 +156,26 @@ const Stats = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <ImpactCard
                 title="Carbon Impact"
-                value="2.5 tons"
+                value={`${(totalBins * 0.1).toFixed(2)} kg`}
                 subtitle="CO₂ emissions prevented this year"
                 icon={RiLeafLine}
                 color="bg-emerald-500"
               />
               <ImpactCard
                 title="Water Saved"
-                value="15,000 L"
+                value={`${(totalBins * 0.39).toFixed(2)} L`}
                 subtitle="Water conservation through recycling"
                 icon={RiWaterFlashLine}
                 color="bg-blue-500"
               />
               <ImpactCard
                 title="Trees Saved"
-                value="45"
+                value={`${(totalBins * 0.04).toFixed(2)}`}
                 subtitle="Trees preserved through paper recycling"
                 icon={RiTreeLine}
                 color="bg-green-600"
               />
             </div>
-
-            
           </div>
         )}
       </main>
