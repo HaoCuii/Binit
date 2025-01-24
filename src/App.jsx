@@ -6,7 +6,7 @@ import SignUp from './pages/Signup';
 import LeaderBoard from './pages/LeaderBoard';
 import Stats from './pages/Stats';
 import Home from './components/Home';
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar';
 import { AuthProvider } from './contexts/authContext';
 
 const App = () => {
