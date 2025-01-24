@@ -2,21 +2,20 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Camera, X, Image as ImageIcon, Sparkles, Upload } from "lucide-react";
 import Features from "./Features";
+import { db } from '../firebase/firebase';
+import { doc, updateDoc, increment } from 'firebase/firestore';
+import { useAuth } from "../contexts/authContext";
 
-const Home = ({ loggedIn }) => {
+const Home = () => {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [result, setResult] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
+  const { currentUser } = useAuth(); // Access currentUser from the auth context
 
   const openCamera = async () => {
-    if (!loggedIn) {
-      navigate('/login');
-      return;
-    }
-
     try {
       setCameraOpen(true);
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -86,9 +85,13 @@ const Home = ({ loggedIn }) => {
       img.onerror = (error) => reject("Image resizing failed");
     });
   };
-  
 
   const processImage = async () => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
     if (!capturedImage) return;
   
     try {
@@ -113,7 +116,7 @@ const Home = ({ loggedIn }) => {
         contents: [
           {
             parts: [
-              { text: "Identify what type of trash this is in one word only!: Waste, Recycle, Glass, or Compost?" },
+              { text: "Identify what type of trash this is in one word only!: Waste, Recycling, Glass, or Composting?" },
               {
                 inlineData: {
                   mimeType: "image/jpeg",
@@ -127,7 +130,7 @@ const Home = ({ loggedIn }) => {
   
       // Send the request to the Gemini API
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${"AIzaSyACuCf09jBTfiIgPMWYp0v6FXBKRW0A8Hk"}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${'AIzaSyACuCf09jBTfiIgPMWYp0v6FXBKRW0A8Hk'}`,
         {
           method: "POST",
           headers: {
@@ -149,6 +152,10 @@ const Home = ({ loggedIn }) => {
         const resultText = data.candidates[0].content.parts[0].text;
         setResult(resultText);
 
+        const userRef = doc(db, "users", currentUser.uid);
+        await updateDoc(userRef, {
+          [`monthlyData.Apr.${resultText.toLowerCase()}`]: increment(1)
+        });
       } else {
         setResult("Unable to classify the image.");
         console.error("Unexpected API response format:", data);
@@ -157,10 +164,9 @@ const Home = ({ loggedIn }) => {
       console.error("Error calling the Gemini API:", error);
       setResult("Error processing the image: " + error.message);
     }
-  
+
     setCapturedImage(null);
   };
-  
 
   return (
     <div className="min-h-screen bg-neutral-100">

@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import { Home, BarChart2, Trophy, LogIn, UserPlus, MoreHorizontal, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/authContext';
+import { doSignOut } from '../firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = ({ loggedIn, setLoggedIn }) => {
+const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const { userLoggedIn } = useAuth();
 
-    const handleLogout = () => {
-        setLoggedIn(false);
+    const handleLogout = async () => {
+        await doSignOut();
+        navigate('/landing');
+    };
+
+    const handleStatsClick = () => {
+        if (!userLoggedIn) {
+            // If user isn't logged in, redirect to login page
+            navigate('/login');
+        } else {
+            // Otherwise, navigate to stats
+            navigate('/stats');
+        }
     };
 
     return (
@@ -13,13 +29,15 @@ const Navbar = ({ loggedIn, setLoggedIn }) => {
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <ul className="flex items-center space-x-8">
                     <NavLink href="/landing" icon={<Home size={18} />} text="Home" />
-                    <NavLink href="/stats" icon={<BarChart2 size={18} />} text="Dashboard" />
+                    <li onClick={handleStatsClick} className="flex items-center cursor-pointer text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900">
+                        <BarChart2 size={18} />
+                        <span className="ml-2">Dashboard</span>
+                    </li>
                     <NavLink href="/leaderboard" icon={<Trophy size={18} />} text="Leaderboard" />
                 </ul>
 
-                {/* For larger screens: Show Sign Up/Log In buttons or Log Out button based on loggedIn */}
                 <div className="hidden md:flex items-center space-x-4">
-                    {!loggedIn ? (
+                    {!userLoggedIn ? (
                         <>
                             <a href="/signup">
                                 <button className="flex items-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700">
@@ -45,7 +63,6 @@ const Navbar = ({ loggedIn, setLoggedIn }) => {
                     )}
                 </div>
 
-                {/* For mobile: Three dots icon */}
                 <div className="md:hidden flex items-center">
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -56,26 +73,33 @@ const Navbar = ({ loggedIn, setLoggedIn }) => {
                 </div>
             </div>
 
-            {/* Mobile Menu (appears when the three dots are clicked) */}
             {isMenuOpen && (
                 <div className="md:hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4">
-                    {!loggedIn ? (
-                        <>
-                            <a href="/signup" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
-                                Sign Up
-                            </a>
-                            <a href="/login" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
-                                Log In
-                            </a>
-                        </>
-                    ) : (
-                        <button
-                            onClick={handleLogout}
-                            className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900"
-                        >
-                            Log Out
-                        </button>
-                    )}
+                    <ul className="space-y-4">
+                        <NavLink href="/landing" icon={<Home size={18} />} text="Home" />
+                        <li onClick={handleStatsClick} className="flex items-center cursor-pointer text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900">
+                            <BarChart2 size={18} />
+                            <span className="ml-2">Dashboard</span>
+                        </li>
+                        <NavLink href="/leaderboard" icon={<Trophy size={18} />} text="Leaderboard" />
+                        {!userLoggedIn ? (
+                            <>
+                                <a href="/signup" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
+                                    Sign Up
+                                </a>
+                                <a href="/login" className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900">
+                                    Log In
+                                </a>
+                            </>
+                        ) : (
+                            <button
+                                onClick={handleLogout}
+                                className="block py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                            >
+                                Log Out
+                            </button>
+                        )}
+                    </ul>
                 </div>
             )}
         </nav>

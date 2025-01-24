@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiDeleteBin7Line, RiLeafLine, RiWaterFlashLine, RiTreeLine, RiRecycleLine, RiPlantLine, RiEarthLine } from "react-icons/ri";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Footer from '../components/Footer';
-import data from '../../data';
 import { PiBeerBottleBold } from "react-icons/pi";
-
+import { useAuth } from '../contexts/authContext';
+import { db } from '../firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const Stats = () => {
-  const { monthlyData } = data.users.find(user => user.user_name === 'JohnDoe');
-  const aprilData = monthlyData.find(month => month.month === 'Apr');
+  const { currentUser } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (currentUser) {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [currentUser]);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  const aprilData = userData.monthlyData.Apr;
   const { recycling: Recycle, composting: Compost, waste: Garbage, glass: Glass } = aprilData;
   const totalBins = Recycle + Compost + Garbage + Glass;
-
-  const [activeTab, setActiveTab] = useState('overview');
 
   const StatCard = ({ title, value, subtitle, icon: Icon, gradient }) => (
     <div className={`bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow ${gradient}`}>
@@ -50,11 +69,13 @@ const Stats = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      
       <main className="container mx-auto px-4 py-8">
         <div className="mt-24 mb-12">
-          <h1 className="text-5xl lg:text-6xl font-bold text-center">
-            Your{" "}
+          <h1 className="text-4xl lg:text-5xl font-bold text-center">
+            Hi, {userData.username}!
+          </h1>
+          <h1 className="text-5xl lg:text-6xl font-bold text-center mt-6">
+            Welcome to your{" "}
             <span className="bg-gradient-to-r from-emerald-400 to-teal-600 bg-clip-text text-transparent">
               Sustainability Dashboard
             </span>
@@ -135,7 +156,15 @@ const Stats = () => {
               <h2 className="text-xl font-medium text-gray-700 mb-6">Monthly Recycling Trends</h2>
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyData}>
+                  <LineChart
+                    data={Object.entries(userData.monthlyData)
+                      .sort((a, b) => {
+                        const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        return monthOrder.indexOf(a[0]) - monthOrder.indexOf(b[0]);
+                      })
+                      .map(([month, data]) => ({ month, ...data }))
+                    }
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
@@ -150,6 +179,8 @@ const Stats = () => {
             </div>
           </div>
         )}
+
+
 
         {activeTab === 'impact' && (
           <div className="space-y-8 mb-12">

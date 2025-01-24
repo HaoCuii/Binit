@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trophy, Medal, Award, Crown, ChevronUp, ChevronDown } from 'lucide-react';
-import data from '../../data';
+import { db } from '../firebase/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import Footer from '../components/Footer';
+import { useAuth } from '../contexts/authContext';
 
 const LeaderBoard = () => {
+  const [users, setUsers] = useState([]);
   const [sortTypes, setSortTypes] = useState(['total_points']);
   const [selectedMonths, setSelectedMonths] = useState(['Apr']);
   const [showFilters, setShowFilters] = useState(false);
+  const { currentUser } = useAuth(); // Access currentUser from the auth context
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      const usersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setUsers(usersData);
+    };
+
+    fetchUsers();
+  }, []);
 
   const calculateTotalPoints = (user, months) => {
     return months.reduce((total, month) => {
-      const monthData = user.monthlyData.find(m => m.month === month);
+      const monthData = user.monthlyData[month];
       return total + monthData.recycling + monthData.composting + monthData.waste + monthData.glass;
     }, 0);
   };
@@ -25,15 +39,17 @@ const LeaderBoard = () => {
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr'];
 
-  const sortedData = data.users.map(user => {
+  const sortedData = users.map(user => {
     const totalPoints = calculateTotalPoints(user, selectedMonths);
-    const monthData = selectedMonths.map(month => user.monthlyData.find(m => m.month === month));
-    const combinedData = monthData.reduce((acc, curr) => ({
-      recycling: acc.recycling + curr.recycling,
-      composting: acc.composting + curr.composting,
-      waste: acc.waste + curr.waste,
-      glass: acc.glass + curr.glass
-    }), { recycling: 0, composting: 0, waste: 0, glass: 0 });
+    const combinedData = selectedMonths.reduce((acc, month) => {
+      const monthData = user.monthlyData[month];
+      return {
+        recycling: acc.recycling + monthData.recycling,
+        composting: acc.composting + monthData.composting,
+        waste: acc.waste + monthData.waste,
+        glass: acc.glass + monthData.glass
+      };
+    }, { recycling: 0, composting: 0, waste: 0, glass: 0 });
 
     return {
       ...user,
@@ -46,7 +62,7 @@ const LeaderBoard = () => {
     return bTotal - aTotal;
   });
 
-  const getPositionStyle = (index) => {
+  const getPositionStyle = (index, userId) => {
     if (index === 0) return 'bg-gradient-to-r from-yellow-100 to-yellow-50 border-l-4 border-yellow-400';
     if (index === 1) return 'bg-gradient-to-r from-gray-100 to-gray-50 border-l-4 border-gray-400';
     if (index === 2) return 'bg-gradient-to-r from-orange-100 to-orange-50 border-l-4 border-orange-400';
@@ -73,9 +89,10 @@ const LeaderBoard = () => {
     );
   };
 
+  const currentUserRank = sortedData.findIndex(user => user.id === currentUser?.uid) + 1;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      
       <main className="container mx-auto px-4 py-8">
         <div className="mt-24 mb-12">
           <h1 className="text-5xl lg:text-6xl font-bold text-center">
@@ -169,15 +186,15 @@ const LeaderBoard = () => {
           <div className="divide-y divide-gray-100">
             {sortedData.map((user, index) => (
               <div 
-                key={user.user_name}
-                className={`p-4 hover:bg-gray-50 transition-colors ${getPositionStyle(index)}`}
+                key={user.id}
+                className={`p-4 hover:bg-gray-50 transition-colors ${getPositionStyle(index, user.id)}`}
               >
                 <div className="grid grid-cols-4 gap-4 items-center">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-gray-700">#{index + 1}</span>
                     {getPositionIcon(index)}
                   </div>
-                  <div className="font-medium text-gray-900">{user.user_name}</div>
+                  <div className="font-medium text-gray-900">{user.username}</div>
                   <div className="text-emerald-600 font-bold">
                     {sortTypes.reduce((sum, type) => sum + user[type], 0).toLocaleString()}
                   </div>
@@ -198,5 +215,4 @@ const LeaderBoard = () => {
     </div>
   );
 };
-
 export default LeaderBoard;

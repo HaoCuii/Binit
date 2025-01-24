@@ -1,37 +1,39 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Landing from './pages/Landing'
-import Login from './pages/Login'
-import SignUp from './pages/Signup'
-import LeaderBoard from './pages/LeaderBoard'
-import Stats from './pages/Stats'
-import Home from './components/Home'
-import Navbar from './components/navbar' // Import Navbar
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import SignUp from './pages/Signup';
+import LeaderBoard from './pages/LeaderBoard';
+import Stats from './pages/Stats';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+import { AuthProvider } from './contexts/authContext';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = React.useState(true)
-
   return (
-    <div>
+    <AuthProvider> {/* Wrap everything inside AuthProvider */}
       <BrowserRouter>
-        <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> {/* Pass setLoggedIn */}
-        <Routes>
-          <Route index element={<Landing loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
-          <Route path='/landing' element={<Landing loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />  
-          <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/leaderboard' element={<LeaderBoard />} />
-          <Route path='/home' element={<Home loggedIn={loggedIn} />} />
+        <Navbar /> {/* Navbar can now use the AuthContext through useAuth */}
 
-          {loggedIn ? (
-            <Route path='/stats' element={<Stats />} />
-          ) : (
-            <Route path='/stats' element={<Navigate to='/login' />} />
-          )}
+        <Routes>
+          <Route index element={<Landing />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/stats" element={<Stats />} />
+          {/* Use the userLoggedIn condition directly in the Stats route */}
+          <Route path="/stats" element={<PrivateRoute />}/> {/* Custom route guard */}
         </Routes>
       </BrowserRouter>
-    </div>
-  )
-}
+    </AuthProvider>
+  );
+};
 
-export default App
+const PrivateRoute = () => {
+  const { userLoggedIn } = useAuth(); // Now this is inside the provider scope
+  return userLoggedIn ? <Stats /> : <Navigate to="/login" />;
+};
+
+export default App;
