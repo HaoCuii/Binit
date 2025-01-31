@@ -171,7 +171,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen relative ">
+    <div className="min-h-screen relative bg-green-200">
       <div className="container mx-auto px-4 pt-20 pb-32">
         <AnimatedBackground/>
         <div className="max-w-4xl mx-auto text-center">
