@@ -1,5 +1,7 @@
 # Binit
 
+<img width="1508" alt="Screenshot 2025-01-31 at 2 26 13 PM" src="https://github.com/user-attachments/assets/aa3dcba1-3096-435a-bf5f-18f5bc4e7a84" />
+
 ## **Inspiration**
 We were inspired to build **Binit** when we learned about the waste that gets thrown in the wrong bins—like recyclables in the trash or compostables in the recycling bin. These improper disposals lead to millions of tons of waste ending up in landfills, emitting harmful **CO2**, and contributing to **deforestation**. If managed properly, we could **save trees** and reduce carbon emissions, making a significant positive environmental impact.
 
