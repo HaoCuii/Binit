@@ -5,6 +5,8 @@ import Features from "./Features";
 import { db } from '../firebase/firebase';
 import { doc, updateDoc, increment } from 'firebase/firestore';
 import { useAuth } from "../contexts/authContext";
+import AnimatedBackground from '/AnimatedBackground';
+
 
 const Home = () => {
   const [cameraOpen, setCameraOpen] = useState(false);
@@ -169,8 +171,8 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100">
-      {/* Hero Section */}
+    <div className="min-h-screen">
+      <AnimatedBackground/>
       <div className="container mx-auto px-4 pt-20 pb-32">
         <div className="max-w-4xl mx-auto text-center">
           <div className="relative inline-block">
