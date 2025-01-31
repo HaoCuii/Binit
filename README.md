@@ -1,26 +1,45 @@
-## ♻️ Binit 
-Overview
+Binit NWHacks 2025 
 
-The AI-Powered Waste Tracker is a web application that helps users monitor and manage their waste efficiently using AI-driven insights. The app utilizes Firebase for authentication and data storage, React for a dynamic UI, and Tailwind CSS for modern styling. AI features help classify waste types, provide disposal recommendations, and track waste reduction goals.
+Inspiration 
 
-Features
+We were inspired to build Binit when we learned about the waste that gets thrown in the wrong bins—like recyclables in the trash or compostables in the recycling bin. These improper disposals lead to millions of tons of waste ending up in landfills, emitting harmful CO2, and contributing to deforestation. If managed properly, we could save trees and reduce carbon emissions, making a significant positive environmental impact. 
 
-AI Waste Classification: Upload images of waste, and AI will classify it as recyclable, compostable, or landfill.
+What it does 
 
-Waste Tracking Dashboard: View detailed analytics on your waste habits.
+With a simple photo, Binit uses the Gemini API to instantly categorize waste, showing users exactly which bin to dispose of it in. Properly disposing of waste earns points, boosting your rank on the leaderboard. Binit tracks your waste management and environmental impact with a clean, minimalist interface, making it easy to monitor your progress. With Binit, you can change the world, one bin at a time! 
 
-Personalized Recommendations: Get AI-powered tips to reduce waste.
+How we built it 
 
-Firebase Authentication: Secure login/signup with Firebase Auth.
+We used React for the frontend and Tailwind for styling. 
 
-Real-time Database: Track waste logs using Firebase Firestore.
+Waste classification is powered by the Gemini API. 
 
-Responsive UI: Styled with Tailwind CSS for a seamless user experience.
+Axios and RESTful APIs were used to establish a connection between the frontend and backend. 
 
-Tech Stack
+The backend is built with Django, and we’re using SQLite for the database. 
 
-Frontend: React, Tailwind CSS
+Challenges we ran into 
 
-Backend: Firebase (Firestore, Authentication, Storage)
+Integrating Django with React presented a unique challenge, as one team member was focused on frontend development with no backend experience, while the other was skilled in backend but lacked frontend expertise. This made communication and collaboration between the two sides challenging, but we were able to overcome it with consistent teamwork and problem-solving. 
 
-AI: TensorFlow.js (or an external AI API for image classification)
+Accomplishments that we're proud of 
+
+Developed our first full-stack website and successfully integrated the frontend and backend. 
+
+Designed a user-friendly, fully responsive UI. 
+
+Implemented an account system using Django. 
+
+Wrapped up the Gemini API to classify waste and provide real-time data. 
+
+What we learned 
+
+React for frontend development. 
+
+Working with RESTful APIs to connect frontend and backend. 
+
+Django for backend development. 
+
+Integrating external APIs like Gemini API for waste classification. 
+
+ 
