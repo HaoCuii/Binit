@@ -188,7 +188,7 @@ const Home = () => {
           </div>
 
           <p className="text-xl lg:text-2xl text-gray-600 mb-12">
-            Transform your waste management with just one click of a button. Using Binit, you'll change the world
+            Transform your waste management with just one click of a button. With Binit, you'll change the world
             one bin at a time.
           </p>
 
