@@ -6,7 +6,7 @@ import About from '../components/About'
 const Landing = () => {
   return (
     <div className='bg-neutral-100'>
-        <div className='max-w-7xl mx-auto'>
+        <div className=''>
           <Home />
           <About />
         </div>
