@@ -5,7 +5,7 @@ import Features from "./Features";
 import { db } from '../firebase/firebase';
 import { doc, updateDoc, increment } from 'firebase/firestore';
 import { useAuth } from "../contexts/authContext";
-import AnimatedBackground from '/AnimatedBackground.jsx';
+import AnimatedBackground from './AnimatedBackground.jsx';
 
 
 const Home = () => {
