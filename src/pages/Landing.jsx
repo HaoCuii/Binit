@@ -5,7 +5,7 @@ import About from '../components/About'
 
 const Landing = () => {
   return (
-    <div className='bg-neutral-100'>
+    <div>
         <div className=''>
           <Home />
           <About />
