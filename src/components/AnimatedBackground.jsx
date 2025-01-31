@@ -53,16 +53,13 @@ const AnimatedBackground = () => {
       ctx.moveTo(0, canvas.height / 2);
       
       for (let x = 0; x < canvas.width; x++) {
-        // Calculate distance from mouse to current x position
         const dx = x - mouseX;
         const dy = yOffset - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Create mouse influence
         const mouseInfluence = Math.max(0, 1 - distance / 200) * mouseSpeed * 0.3;
         const distortion = Math.sin(distance * 0.03 - time * 2) * mouseInfluence;
         
-        // Combine base wave with mouse distortion
         const y = Math.sin(x * frequency + time) * amplitude + 
                  yOffset + 
                  distortion;
@@ -78,20 +75,18 @@ const AnimatedBackground = () => {
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw multiple waves
+      // Draw multiple waves with light green colors
       ctx.lineWidth = 2;
-      drawWave(0.003, 50, canvas.height * 0.3, '96, 165, 250', 0.2);  // Light blue
-      drawWave(0.004, 40, canvas.height * 0.4, '99, 102, 241', 0.3);  // Indigo
-      drawWave(0.002, 60, canvas.height * 0.5, '139, 92, 246', 0.2);  // Purple
+      drawWave(0.003, 50, canvas.height * 0.3, '220, 252, 231', 0.4);  // Lightest green
+      drawWave(0.004, 40, canvas.height * 0.4, '187, 247, 208', 0.3);  // Light green
+      drawWave(0.002, 60, canvas.height * 0.5, '167, 243, 208', 0.3);  // Slightly darker green
       
-      // Update and draw particles with mouse influence
+      // Update and draw particles
       particles.forEach(particle => {
-        // Calculate distance from mouse
         const dx = particle.x - mouseX;
         const dy = particle.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Add mouse repulsion
         if (distance < 100) {
           const angle = Math.atan2(dy, dx);
           const force = (100 - distance) * 0.01;
@@ -102,32 +97,30 @@ const AnimatedBackground = () => {
         particle.x += particle.speedX;
         particle.y += particle.speedY + Math.sin(time * 2) * 0.2;
         
-        // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width;
         if (particle.x > canvas.width) particle.x = 0;
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
         
-        // Draw particle with size variation based on mouse proximity
         const particleSize = particle.size * (1 + Math.max(0, 1 - distance / 100) * mouseSpeed * 0.1);
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particleSize, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99, 102, 241, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(167, 243, 208, ${particle.opacity})`; // Light green particles
         ctx.fill();
       });
       
-      // Add mouse trail effect
+      // Mouse trail with light green gradient
       if (mouseSpeed > 0) {
         ctx.beginPath();
         ctx.arc(mouseX, mouseY, mouseSpeed * 0.5, 0, Math.PI * 2);
         const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 100);
-        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.2)');
-        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+        gradient.addColorStop(0, 'rgba(167, 243, 208, 0.2)'); // Light green trail
+        gradient.addColorStop(1, 'rgba(167, 243, 208, 0)');
         ctx.fillStyle = gradient;
         ctx.fill();
       }
       
-      mouseSpeed *= 0.95; // Decay mouse speed
+      mouseSpeed *= 0.95;
       time += 0.01;
       animationFrameId = requestAnimationFrame(animate);
     };
